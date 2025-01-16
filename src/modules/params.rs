@@ -2,6 +2,8 @@ use std::collections::HashSet;
 
 use anyhow::{Context, Result};
 use chrono::NaiveDate;
+use clap::CommandFactory;
+use clap_complete::generate;
 use dialoguer::{theme::ColorfulTheme, Confirm, Select};
 
 use super::{
@@ -21,6 +23,13 @@ pub struct Params {
 
 impl Params {
 	pub async fn merge(config: &Config, args: &Cli) -> Result<Self> {
+		if let Some(shell) = args.completions {
+			let mut cmd = Cli::command();
+			let bin_name = cmd.get_name().to_string();
+			generate(shell, &mut cmd, bin_name, &mut std::io::stdout());
+			std::process::exit(0);
+		}
+
 		let language = match &args.language {
 			Some(lang) => lang.to_string(),
 			None => config.language.clone(),

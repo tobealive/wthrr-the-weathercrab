@@ -1,6 +1,7 @@
 use anyhow::{bail, Result};
 use chrono::NaiveDate;
 use clap::{Parser, ValueEnum};
+use clap_complete::Shell;
 use serde::{Deserialize, Serialize};
 use strum_macros::AsRefStr;
 
@@ -34,6 +35,10 @@ pub struct Cli {
 	/// Wipe wthrr's configuration data
 	#[arg(short, long, group = "config_file_action")]
 	pub reset: bool,
+
+	/// Generate shell completions
+	#[arg(long, value_name = "SHELL")]
+	pub completions: Option<Shell>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, ValueEnum, AsRefStr, Serialize, Deserialize, Hash)]
